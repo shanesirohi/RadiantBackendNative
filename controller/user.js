@@ -59,6 +59,8 @@ const userCtrl = {
       message: "Login success",
       token,
       id: user._id,
+      school: user.school,
+      favouriteGenre: user.favouriteGenre,
       username: user.username,
     });
   }),
