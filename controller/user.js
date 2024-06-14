@@ -6,17 +6,17 @@ const User = require("../model/User");
 const userCtrl = {
   //!Register
   register: asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-    console.log({ email, password });
+    const { username, password, school, favouriteGenre } = req.body;
+    console.log({ username, password, school, favouriteGenre});
     //!Validations
-    if (!email || !password) {
+    if (!username || !password || !school || !favouriteGenre) {
       throw new Error("Please all fields are required");
     }
     //! check if user already exists
-    const userExits = await User.findOne({ email });
+    const userExits = await User.findOne({ username });
     // console.log("userExits", userExits);
     if (userExits) {
-      throw new Error("User already exists");
+      throw new Error("User already exists, please find a new username");
     }
     //! Hash the user password
     const salt = await bcrypt.genSalt(10);
@@ -24,21 +24,25 @@ const userCtrl = {
     //!Create the user
     const userCreated = await User.create({
       password: hashedPassword,
-      email,
+      username,
+      school,
+      favouriteGenre,
     });
     //!Send the response
     console.log("userCreated", userCreated);
     res.json({
+      password: userCreated.password,
       username: userCreated.username,
-      email: userCreated.email,
+      school: userCreated.school,
+      favouriteGenre: userCreated.favouriteGenre,
       id: userCreated.id,
     });
   }),
   //!Login
   login: asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password, favouriteGenre, school } = req.body;
     //!Check if user email exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     console.log("user backend", user);
     if (!user) {
       throw new Error("Invalid credentials");
@@ -55,7 +59,6 @@ const userCtrl = {
       message: "Login success",
       token,
       id: user._id,
-      email: user.email,
       username: user.username,
     });
   }),
