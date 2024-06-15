@@ -8,7 +8,7 @@ const userCtrl = {
   //!Register
   register: asyncHandler(async (req, res) => {
     const { username, password, school, interest, specificInterest } = req.body;
-    console.log({ username, password, school, interest, specificInterest});
+    console.log({ username, password, school, interest, specificInterest, avatar});
     //!Validations
     if (!username || !password || !school || !interest || !specificInterest) {
       throw new Error("Please all fields are required");
@@ -29,6 +29,7 @@ const userCtrl = {
       school,
       interest,
       specificInterest,
+      avatar,
     });
     //!Send the response
     console.log("userCreated", userCreated);
@@ -38,12 +39,13 @@ const userCtrl = {
       school: userCreated.school,
       interest: userCreated.interest,
       specificInterest: userCreated.specificInterest,
+      avatar: userCreated.avatar,
       id: userCreated.id,
     });
   }),
   //!Login
   login: asyncHandler(async (req, res) => {
-    const { username, password, interest, school, specificInterest } = req.body;
+    const { username, password, interest, school, specificInterest, avatar } = req.body;
     //!Check if user email exists
     const user = await User.findOne({ username });
     console.log("user backend", user);
@@ -66,6 +68,7 @@ const userCtrl = {
       interest: user.interest,
       username: user.username,
       specificInterest: user.specificInterest,
+      avatar: user.avatar,
     });
   }),
   getUsers: asyncHandler(async (req, res) => {
