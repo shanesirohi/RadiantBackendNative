@@ -6,10 +6,10 @@ const User = require("../model/User");
 const userCtrl = {
   //!Register
   register: asyncHandler(async (req, res) => {
-    const { username, password, school, favouriteGenre } = req.body;
-    console.log({ username, password, school, favouriteGenre});
+    const { username, password, school, interest } = req.body;
+    console.log({ username, password, school, interest});
     //!Validations
-    if (!username || !password || !school || !favouriteGenre) {
+    if (!username || !password || !school || !interest) {
       throw new Error("Please all fields are required");
     }
     //! check if user already exists
@@ -26,7 +26,7 @@ const userCtrl = {
       password: hashedPassword,
       username,
       school,
-      favouriteGenre,
+      interest,
     });
     //!Send the response
     console.log("userCreated", userCreated);
@@ -34,13 +34,13 @@ const userCtrl = {
       password: userCreated.password,
       username: userCreated.username,
       school: userCreated.school,
-      favouriteGenre: userCreated.favouriteGenre,
+      interest: userCreated.interest,
       id: userCreated.id,
     });
   }),
   //!Login
   login: asyncHandler(async (req, res) => {
-    const { username, password, favouriteGenre, school } = req.body;
+    const { username, password, interest, school } = req.body;
     //!Check if user email exists
     const user = await User.findOne({ username });
     console.log("user backend", user);
@@ -60,7 +60,7 @@ const userCtrl = {
       token,
       id: user._id,
       school: user.school,
-      favouriteGenre: user.favouriteGenre,
+      interest: user.interest,
       username: user.username,
     });
   }),
