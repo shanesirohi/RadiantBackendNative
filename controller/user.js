@@ -7,10 +7,10 @@ const Post = require('../model/Post');
 const userCtrl = {
   //!Register
   register: asyncHandler(async (req, res) => {
-    const { username, password, school, interest } = req.body;
-    console.log({ username, password, school, interest});
+    const { username, password, school, interest, specificInterest } = req.body;
+    console.log({ username, password, school, interest, specificInterest});
     //!Validations
-    if (!username || !password || !school || !interest) {
+    if (!username || !password || !school || !interest || !specificInterest) {
       throw new Error("Please all fields are required");
     }
     //! check if user already exists
@@ -28,6 +28,7 @@ const userCtrl = {
       username,
       school,
       interest,
+      specificInterest,
     });
     //!Send the response
     console.log("userCreated", userCreated);
@@ -36,12 +37,13 @@ const userCtrl = {
       username: userCreated.username,
       school: userCreated.school,
       interest: userCreated.interest,
+      specificInterest: userCreated.specificInterest,
       id: userCreated.id,
     });
   }),
   //!Login
   login: asyncHandler(async (req, res) => {
-    const { username, password, interest, school } = req.body;
+    const { username, password, interest, school, specificInterest } = req.body;
     //!Check if user email exists
     const user = await User.findOne({ username });
     console.log("user backend", user);
@@ -63,6 +65,7 @@ const userCtrl = {
       school: user.school,
       interest: user.interest,
       username: user.username,
+      specificInterest: user.specificInterest,
     });
   }),
   getUsers: asyncHandler(async (req, res) => {
