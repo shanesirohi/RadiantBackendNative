@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const User = require("../model/User");
-
+const Post = require('../model/Post');
 const userCtrl = {
   //!Register
   register: asyncHandler(async (req, res) => {
@@ -83,6 +83,20 @@ const userCtrl = {
       res.status(500).json({ message: "Server Error" });
     }
   }),
+  addPost: async (req, res) => {
+    const { user, image, caption } = req.body;
+    try {
+      const newPost = await Post.create({
+        user,
+        image,
+        caption,
+      });
+      res.status(201).json(newPost);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  },
   //!Profile
   profile: asyncHandler(async (req, res) => {
     const user = await User.findById(req.user).select("-password");
