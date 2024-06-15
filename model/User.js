@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     interest: {type:String, required: true},
     specificInterest: {type:String, required: true},
     bio: {type:String, default: ""},
+    avatar: {type:String, default:''},
   },
   {
     timestamps: true,
