@@ -1,3 +1,4 @@
+//model/User.js
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -6,7 +7,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     school: {type: String, required: true},
     interest: {type:String, required: true},
-    specificInterest: {type:String, default: ""},
+    specificInterest: {type:String, required: true},
     bio: {type:String, default: ""},
   },
   {

@@ -9,7 +9,7 @@ mongoose
   .catch((e) => console.log(e));
 
 //! Middlewares
-app.use(express.json()); //pass incoming json data from the user
+app.use(express.json()); 
 //!Routes
 app.use("/", router);
 //!error handler

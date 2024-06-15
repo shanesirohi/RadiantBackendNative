@@ -1,3 +1,4 @@
+//controller/user.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
@@ -53,7 +54,7 @@ const userCtrl = {
       throw new Error("Invalid credentials");
     }
     //! Generate the token
-    const token = jwt.sign({ id: user._id }, "anyKey", { expiresIn: "30d" });
+    const token = jwt.sign({ id: user._id }, "anyKey", { expiresIn: "10d" });
     //!Send the response
     res.json({
       message: "Login success",
@@ -64,9 +65,26 @@ const userCtrl = {
       username: user.username,
     });
   }),
+  getUsers: asyncHandler(async (req, res) => {
+    try {
+      const users = await User.find().select("-password");
+      res.json(users); // Return array of users directly
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }),
+  getPosts: asyncHandler(async (req, res) => {
+    try {
+      const posts = await Post.find();
+      res.json(posts); // Return array of posts directly
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }),
   //!Profile
   profile: asyncHandler(async (req, res) => {
-    //Find the user
     const user = await User.findById(req.user).select("-password");
     res.json({ user });
   }),
